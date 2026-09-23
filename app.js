@@ -439,40 +439,48 @@ function setImgPreview(src) {
 }
 
 function initImgUpload() {
-  var fileInput = eid('imgFileInput');
-  var area      = eid('imgUploadArea');
-  var quitarBtn = eid('btnQuitarImg');
+  var fileInput   = eid('imgFileInput');
+  var cameraInput = eid('imgCameraInput');
+  var area        = eid('imgUploadArea');
+  var quitarBtn   = eid('btnQuitarImg');
+
+  function handleFile(file) {
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { toast('La imagen supera los 2MB', 'error'); return; }
+    var reader = new FileReader();
+    reader.onload = function(e) { setImgPreview(e.target.result); };
+    reader.readAsDataURL(file);
+  }
 
   if (fileInput) {
     fileInput.addEventListener('change', function() {
-      var file = fileInput.files[0];
-      if (!file) return;
-      if (file.size > 2 * 1024 * 1024) { toast('La imagen supera los 2MB', 'error'); return; }
-      var reader = new FileReader();
-      reader.onload = function(e) { setImgPreview(e.target.result); };
-      reader.readAsDataURL(file);
+      handleFile(fileInput.files[0]);
       fileInput.value = '';
     });
   }
 
-  // Clic en el área también abre el selector
+  if (cameraInput) {
+    cameraInput.addEventListener('change', function() {
+      handleFile(cameraInput.files[0]);
+      cameraInput.value = '';
+    });
+  }
+
+  // Clic en el área abre galería (no si hizo clic en botón)
   if (area) {
     area.addEventListener('click', function(e) {
-      if (e.target.closest('.btn')) return; // no disparar si hizo clic en botón
+      if (e.target.closest('.btn') || e.target.closest('label')) return;
       if (fileInput) fileInput.click();
     });
     // Drag & drop
-    area.addEventListener('dragover', function(e) { e.preventDefault(); area.classList.add('drag-over'); });
+    area.addEventListener('dragover',  function(e) { e.preventDefault(); area.classList.add('drag-over'); });
     area.addEventListener('dragleave', function()  { area.classList.remove('drag-over'); });
     area.addEventListener('drop', function(e) {
       e.preventDefault();
       area.classList.remove('drag-over');
       var file = e.dataTransfer.files[0];
-      if (!file || !file.type.startsWith('image/')) return;
-      if (file.size > 2 * 1024 * 1024) { toast('La imagen supera los 2MB', 'error'); return; }
-      var reader = new FileReader();
-      reader.onload = function(ev) { setImgPreview(ev.target.result); };
-      reader.readAsDataURL(file);
+      if (!file || !file.type.startsWith('image/')) { toast('Solo se aceptan imágenes', 'warning'); return; }
+      handleFile(file);
     });
   }
 

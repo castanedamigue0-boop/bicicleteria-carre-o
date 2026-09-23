@@ -427,15 +427,21 @@
               <img id="imgPreview" src="img/placeholder.svg" alt="Vista previa" />
               <div class="img-upload-actions">
                 <label class="btn btn-outline btn-sm" for="imgFileInput">
-                  <i class="fas fa-upload"></i> Subir imagen
+                  <i class="fas fa-images"></i> Galería / Archivo
+                </label>
+                <label class="btn btn-primary btn-sm" for="imgCameraInput">
+                  <i class="fas fa-camera"></i> Cámara
                 </label>
                 <button type="button" class="btn btn-danger btn-sm" id="btnQuitarImg">
                   <i class="fas fa-trash"></i> Quitar
                 </button>
               </div>
-              <p class="img-upload-hint">JPG, PNG, WEBP — máx 2MB</p>
+              <p class="img-upload-hint">📁 Elige un archivo o arrastra aquí &nbsp;|&nbsp; 📷 Toma foto con la cámara</p>
             </div>
+            <!-- Galería / explorador de archivos -->
             <input type="file" id="imgFileInput" accept="image/*" style="display:none" />
+            <!-- Cámara directa (móvil y PC con webcam) -->
+            <input type="file" id="imgCameraInput" accept="image/*" capture="environment" style="display:none" />
             <input type="hidden" id="prodImagen" value="" />
           </div>
           <div class="form-group span2">
