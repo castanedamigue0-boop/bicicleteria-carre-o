@@ -4,33 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🚲 BiciStore - Inventario</title>
-
-  <!-- Loader CSS inline — no depende de ninguna librería externa -->
-  <style>
-    #loader { display: none !important; }
-  </style>
-
   <link rel="stylesheet" href="libs/fontawesome/css/all.min.css" />
   <link rel="stylesheet" href="libs/fonts/poppins.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- LOADER — usa solo CSS inline y emoji, sin depender de Font Awesome -->
-  <div id="loader">
-    <div class="loader-inner">
-      <span class="loader-emoji">🚲</span>
-      <p>Cargando Bicicletería Carreño...</p>
-      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
-    </div>
-  </div>
-
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="logo">
         <i class="fas fa-bicycle"></i>
-        <span>Bicicleria carreño</span>
+        <span>Bicicletería Carreño</span>
       </div>
       <button class="sidebar-toggle" id="sidebarToggle">
         <i class="fas fa-bars"></i>
@@ -83,80 +68,50 @@
       </div>
     </header>
 
-    <!-- SECTIONS -->
-
     <!-- ===== DASHBOARD ===== -->
     <section class="section active" id="section-dashboard">
       <div class="stats-grid">
         <div class="stat-card card-blue animate-in">
           <div class="stat-icon"><i class="fas fa-boxes"></i></div>
-          <div class="stat-info">
-            <h3 id="totalProductos">0</h3>
-            <p>Total Productos</p>
-          </div>
+          <div class="stat-info"><h3 id="totalProductos">0</h3><p>Total Productos</p></div>
           <div class="stat-wave"></div>
         </div>
         <div class="stat-card card-green animate-in delay-1">
           <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
-          <div class="stat-info">
-            <h3 id="totalValor">$0</h3>
-            <p>Valor Inventario</p>
-          </div>
+          <div class="stat-info"><h3 id="totalValor">$0</h3><p>Valor Inventario</p></div>
           <div class="stat-wave"></div>
         </div>
         <div class="stat-card card-orange animate-in delay-2">
           <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
-          <div class="stat-info">
-            <h3 id="totalVentas">$0</h3>
-            <p>Ventas del Mes</p>
-          </div>
+          <div class="stat-info"><h3 id="totalVentas">$0</h3><p>Ventas del Mes</p></div>
           <div class="stat-wave"></div>
         </div>
         <div class="stat-card card-red animate-in delay-3">
           <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
-          <div class="stat-info">
-            <h3 id="stockBajo">0</h3>
-            <p>Stock Bajo</p>
-          </div>
+          <div class="stat-info"><h3 id="stockBajo">0</h3><p>Stock Bajo</p></div>
           <div class="stat-wave"></div>
         </div>
       </div>
-
       <div class="dashboard-grid">
         <div class="card animate-in delay-2">
-          <div class="card-header">
-            <h2><i class="fas fa-chart-bar"></i> Movimientos Recientes</h2>
-          </div>
-          <div class="recent-moves" id="recentMoves">
-            <p class="empty-msg">Sin movimientos aún</p>
-          </div>
+          <div class="card-header"><h2><i class="fas fa-chart-bar"></i> Movimientos Recientes</h2></div>
+          <div class="recent-moves" id="recentMoves"><p class="empty-msg">Sin movimientos aún</p></div>
         </div>
         <div class="card animate-in delay-3">
-          <div class="card-header">
-            <h2><i class="fas fa-fire"></i> Top Productos</h2>
-          </div>
-          <div class="top-products" id="topProducts">
-            <p class="empty-msg">Sin datos aún</p>
-          </div>
+          <div class="card-header"><h2><i class="fas fa-fire"></i> Top Productos</h2></div>
+          <div class="top-products" id="topProducts"><p class="empty-msg">Sin datos aún</p></div>
         </div>
       </div>
-
       <div class="card animate-in delay-4">
-        <div class="card-header">
-          <h2><i class="fas fa-exclamation-circle"></i> Alertas de Stock</h2>
-        </div>
-        <div class="alerts-list" id="alertsList">
-          <p class="empty-msg">Sin alertas</p>
-        </div>
+        <div class="card-header"><h2><i class="fas fa-exclamation-circle"></i> Alertas de Stock</h2></div>
+        <div class="alerts-list" id="alertsList"><p class="empty-msg">Sin alertas</p></div>
       </div>
     </section>
 
     <!-- ===== INVENTARIO ===== -->
     <section class="section" id="section-inventario">
-      <!-- CHIPS DE CATEGORÍAS -->
       <div class="category-chips" id="categoryChips"></div>
 
-      <!-- BUSCADOR DE INVENTARIO -->
       <div class="inv-search-bar animate-in">
         <div class="inv-search-box">
           <i class="fas fa-search"></i>
@@ -172,18 +127,18 @@
         <div class="filters">
           <select id="filterCategoria" class="select-styled">
             <option value="">Todas las categorías</option>
-            <option value="Bicicletas">Bicicletas</option>
-            <option value="Llantas y Neumáticos">Llantas y Neumáticos</option>
-            <option value="Frenos">Frenos</option>
-            <option value="Transmisión">Transmisión</option>
-            <option value="Manillar y Potencia">Manillar y Potencia</option>
-            <option value="Sillín">Sillín</option>
-            <option value="Iluminación">Iluminación</option>
-            <option value="Accesorios">Accesorios</option>
-            <option value="Herramientas">Herramientas</option>
-            <option value="Lubricantes">Lubricantes</option>
-            <option value="Ropa y Equipamiento">Ropa y Equipamiento</option>
-            <option value="Electricidad">Electricidad</option>
+            <option>Bicicletas</option>
+            <option>Llantas y Neumáticos</option>
+            <option>Frenos</option>
+            <option>Transmisión</option>
+            <option>Manillar y Potencia</option>
+            <option>Sillín</option>
+            <option>Iluminación</option>
+            <option>Accesorios</option>
+            <option>Herramientas</option>
+            <option>Lubricantes</option>
+            <option>Ropa y Equipamiento</option>
+            <option>Electricidad</option>
           </select>
           <select id="filterStock" class="select-styled">
             <option value="">Todo el stock</option>
@@ -193,32 +148,21 @@
           </select>
         </div>
         <div class="view-toggle">
-          <button class="view-btn active" id="btnViewGrid" title="Vista cuadrícula">
-            <i class="fas fa-th"></i>
-          </button>
-          <button class="view-btn" id="btnViewList" title="Vista lista">
-            <i class="fas fa-list"></i>
-          </button>
+          <button class="view-btn active" id="btnViewGrid" title="Vista cuadrícula"><i class="fas fa-th"></i></button>
+          <button class="view-btn" id="btnViewList" title="Vista lista"><i class="fas fa-list"></i></button>
         </div>
         <button class="btn btn-primary" id="btnAgregarProducto">
           <i class="fas fa-plus"></i> Agregar Producto
         </button>
       </div>
 
-      <div class="table-wrapper card animate-in">
+      <div class="table-wrapper card animate-in" style="display:none">
         <table class="inventory-table" id="inventoryTable">
           <thead>
             <tr>
-              <th>Imagen</th>
-              <th>Código</th>
-              <th>Producto</th>
-              <th>Categoría</th>
-              <th>Stock</th>
-              <th>Precio Compra</th>
-              <th>Precio Venta</th>
-              <th>Margen</th>
-              <th>Estado</th>
-              <th>Acciones</th>
+              <th>Img</th><th>Código</th><th>Producto</th><th>Categoría</th>
+              <th>Stock</th><th>P. Compra</th><th>P. Venta</th><th>Margen</th>
+              <th>Estado</th><th>Acciones</th>
             </tr>
           </thead>
           <tbody id="inventoryBody"></tbody>
@@ -228,22 +172,19 @@
           <p>No hay productos. ¡Agrega el primero!</p>
         </div>
       </div>
+      <div class="products-grid" id="productsGrid"></div>
     </section>
 
     <!-- ===== VENTAS ===== -->
     <section class="section" id="section-ventas">
       <div class="transaction-container">
         <div class="card animate-in">
-          <div class="card-header">
-            <h2><i class="fas fa-shopping-cart"></i> Registrar Venta</h2>
-          </div>
+          <div class="card-header"><h2><i class="fas fa-shopping-cart"></i> Registrar Venta</h2></div>
           <div class="transaction-form">
             <div class="form-row">
               <div class="form-group">
                 <label>Producto</label>
-                <select id="ventaProducto" class="select-styled">
-                  <option value="">Selecciona un producto</option>
-                </select>
+                <select id="ventaProducto" class="select-styled"><option value="">Selecciona un producto</option></select>
               </div>
               <div class="form-group">
                 <label>Cantidad</label>
@@ -273,11 +214,8 @@
             </button>
           </div>
         </div>
-
         <div class="card animate-in delay-2">
-          <div class="card-header">
-            <h2><i class="fas fa-receipt"></i> Historial de Ventas</h2>
-          </div>
+          <div class="card-header"><h2><i class="fas fa-receipt"></i> Historial de Ventas</h2></div>
           <div class="moves-list" id="ventasList"></div>
         </div>
       </div>
@@ -287,16 +225,12 @@
     <section class="section" id="section-compras">
       <div class="transaction-container">
         <div class="card animate-in">
-          <div class="card-header">
-            <h2><i class="fas fa-truck"></i> Registrar Compra / Entrada</h2>
-          </div>
+          <div class="card-header"><h2><i class="fas fa-truck"></i> Registrar Compra / Entrada</h2></div>
           <div class="transaction-form">
             <div class="form-row">
               <div class="form-group">
                 <label>Producto</label>
-                <select id="compraProducto" class="select-styled">
-                  <option value="">Selecciona un producto</option>
-                </select>
+                <select id="compraProducto" class="select-styled"><option value="">Selecciona un producto</option></select>
               </div>
               <div class="form-group">
                 <label>Cantidad</label>
@@ -322,11 +256,8 @@
             </button>
           </div>
         </div>
-
         <div class="card animate-in delay-2">
-          <div class="card-header">
-            <h2><i class="fas fa-history"></i> Historial de Compras</h2>
-          </div>
+          <div class="card-header"><h2><i class="fas fa-history"></i> Historial de Compras</h2></div>
           <div class="moves-list" id="comprasList"></div>
         </div>
       </div>
@@ -351,24 +282,15 @@
         <div class="summary-bar">
           <div class="summary-item green">
             <i class="fas fa-arrow-up"></i>
-            <div>
-              <span>Ingresos Totales</span>
-              <strong id="sumIngresos">$0</strong>
-            </div>
+            <div><span>Ingresos Totales</span><strong id="sumIngresos">$0</strong></div>
           </div>
           <div class="summary-item red">
             <i class="fas fa-arrow-down"></i>
-            <div>
-              <span>Egresos Totales</span>
-              <strong id="sumEgresos">$0</strong>
-            </div>
+            <div><span>Egresos Totales</span><strong id="sumEgresos">$0</strong></div>
           </div>
           <div class="summary-item blue">
             <i class="fas fa-balance-scale"></i>
-            <div>
-              <span>Balance</span>
-              <strong id="sumBalance">$0</strong>
-            </div>
+            <div><span>Balance</span><strong id="sumBalance">$0</strong></div>
           </div>
         </div>
         <div class="moves-list" id="allMovesList"></div>
@@ -379,9 +301,7 @@
     <section class="section" id="section-calculadora">
       <div class="calc-container">
         <div class="card calc-card animate-in">
-          <div class="card-header">
-            <h2><i class="fas fa-calculator"></i> Calculadora</h2>
-          </div>
+          <div class="card-header"><h2><i class="fas fa-calculator"></i> Calculadora</h2></div>
           <div class="calculator">
             <div class="calc-display">
               <div class="calc-expression" id="calcExpression"></div>
@@ -389,32 +309,29 @@
             </div>
             <div class="calc-buttons">
               <button class="calc-btn span2 btn-clear" onclick="calcClear()">AC</button>
-              <button class="calc-btn btn-func" onclick="calcBackspace()"><i class="fas fa-backspace"></i></button>
-              <button class="calc-btn btn-op" onclick="calcOp('%')">%</button>
-              <button class="calc-btn btn-num" onclick="calcNum('7')">7</button>
-              <button class="calc-btn btn-num" onclick="calcNum('8')">8</button>
-              <button class="calc-btn btn-num" onclick="calcNum('9')">9</button>
-              <button class="calc-btn btn-op" onclick="calcOp('/')">÷</button>
-              <button class="calc-btn btn-num" onclick="calcNum('4')">4</button>
-              <button class="calc-btn btn-num" onclick="calcNum('5')">5</button>
-              <button class="calc-btn btn-num" onclick="calcNum('6')">6</button>
-              <button class="calc-btn btn-op" onclick="calcOp('*')">×</button>
-              <button class="calc-btn btn-num" onclick="calcNum('1')">1</button>
-              <button class="calc-btn btn-num" onclick="calcNum('2')">2</button>
-              <button class="calc-btn btn-num" onclick="calcNum('3')">3</button>
-              <button class="calc-btn btn-op" onclick="calcOp('-')">−</button>
-              <button class="calc-btn btn-num" onclick="calcNum('0')">0</button>
-              <button class="calc-btn btn-num" onclick="calcNum('.')">.</button>
+              <button class="calc-btn btn-func"  onclick="calcBackspace()"><i class="fas fa-backspace"></i></button>
+              <button class="calc-btn btn-op"    onclick="calcOp('%')">%</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('7')">7</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('8')">8</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('9')">9</button>
+              <button class="calc-btn btn-op"    onclick="calcOp('/')">÷</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('4')">4</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('5')">5</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('6')">6</button>
+              <button class="calc-btn btn-op"    onclick="calcOp('*')">×</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('1')">1</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('2')">2</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('3')">3</button>
+              <button class="calc-btn btn-op"    onclick="calcOp('-')">−</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('0')">0</button>
+              <button class="calc-btn btn-num"   onclick="calcNum('.')">.</button>
               <button class="calc-btn btn-equal" onclick="calcEqual()">=</button>
-              <button class="calc-btn btn-op" onclick="calcOp('+')">+</button>
+              <button class="calc-btn btn-op"    onclick="calcOp('+')">+</button>
             </div>
           </div>
         </div>
-
         <div class="card animate-in delay-2">
-          <div class="card-header">
-            <h2><i class="fas fa-percent"></i> Calculadora de Rentabilidad</h2>
-          </div>
+          <div class="card-header"><h2><i class="fas fa-percent"></i> Calculadora de Rentabilidad</h2></div>
           <div class="profit-calc">
             <div class="form-group">
               <label>Precio de Compra</label>
@@ -429,31 +346,19 @@
               <input type="number" id="pcCantidad" class="input-styled" placeholder="1" value="1" oninput="calcProfit()" />
             </div>
             <div class="profit-results">
-              <div class="profit-item">
-                <span>Ganancia Unitaria</span>
-                <strong id="gananciaUnit" class="green-text">$0</strong>
-              </div>
-              <div class="profit-item">
-                <span>Margen %</span>
-                <strong id="margenPct" class="blue-text">0%</strong>
-              </div>
-              <div class="profit-item">
-                <span>Ganancia Total</span>
-                <strong id="gananciaTotal" class="green-text">$0</strong>
-              </div>
-              <div class="profit-item">
-                <span>ROI</span>
-                <strong id="roiVal" class="orange-text">0%</strong>
-              </div>
+              <div class="profit-item"><span>Ganancia Unitaria</span><strong id="gananciaUnit" class="green-text">$0</strong></div>
+              <div class="profit-item"><span>Margen %</span><strong id="margenPct" class="blue-text">0%</strong></div>
+              <div class="profit-item"><span>Ganancia Total</span><strong id="gananciaTotal" class="green-text">$0</strong></div>
+              <div class="profit-item"><span>ROI</span><strong id="roiVal" class="orange-text">0%</strong></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-  </main><!-- /main -->
+  </main>
 
-  <!-- ===== MODAL AGREGAR/EDITAR PRODUCTO ===== -->
+  <!-- MODAL PRODUCTO -->
   <div class="modal-overlay" id="modalProducto">
     <div class="modal animate-modal">
       <div class="modal-header">
@@ -508,12 +413,8 @@
           <div class="form-group">
             <label>Unidad</label>
             <select id="prodUnidad" class="select-styled">
-              <option>unidad</option>
-              <option>par</option>
-              <option>caja</option>
-              <option>litro</option>
-              <option>metro</option>
-              <option>kit</option>
+              <option>unidad</option><option>par</option><option>caja</option>
+              <option>litro</option><option>metro</option><option>kit</option>
             </select>
           </div>
           <div class="form-group span2">
@@ -539,17 +440,7 @@
   <!-- TOAST -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <script>
-    // Limpia localStorage si hay datos corruptos
-    try { JSON.parse(localStorage.getItem('bicistore_productos') || '[]'); }
-    catch(e) { localStorage.clear(); }
-
-    // Fuerza recarga de app.js sin caché
-    (function() {
-      var s = document.createElement('script');
-      s.src = 'app.js?v=' + Date.now();
-      document.body.appendChild(s);
-    })();
-  </script>
+  <!-- app.js cargado normal, sin trucos de cache -->
+  <script src="app.js"></script>
 </body>
 </html>
