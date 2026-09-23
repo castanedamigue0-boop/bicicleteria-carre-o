@@ -839,19 +839,8 @@ function initEvents() {
 
 // ---- INIT ----
 window.addEventListener('DOMContentLoaded', () => {
-  const loader = eid('loader');
-
-  // Ocultar loader pase lo que pase
-  const hideLoader = () => { if (loader) { loader.style.display = 'none'; } };
-  const failsafe   = setTimeout(hideLoader, 3000); // máximo 3s de loader
-
-  try { loadData();        } catch(e) { console.error(e); }
-  try { initEvents();      } catch(e) { console.error(e); }
+  try { loadData();             } catch(e) { console.error(e); }
+  try { initEvents();           } catch(e) { console.error(e); }
   try { renderEmojiPicker('🚲'); } catch(e) { console.error(e); }
-
-  setTimeout(() => {
-    clearTimeout(failsafe);
-    hideLoader();
-    try { navigate('dashboard'); } catch(e) { console.error(e); }
-  }, 800);
+  try { navigate('dashboard');  } catch(e) { console.error(e); }
 });
