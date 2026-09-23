@@ -357,7 +357,7 @@ function renderList(products, q) {
         + (p.descripcion?'<div style="font-size:.75rem;color:var(--text3);margin-top:2px">'+p.descripcion.substring(0,45)+(p.descripcion.length>45?'...':'')+'</div>':'')
       + '</td>'
       + '<td><span style="font-size:.8rem;padding:3px 8px;background:var(--bg3);border-radius:20px">' + p.categoria + '</span></td>'
-      + '<td><span class="stock-badge ' + stockCls + '"><i class="fas ' + (p.stock===0?'fa-ban':p.stock<=p.stockMin?'fa-exclamation-triangle':'fa-check') + '"></i> ' + p.stock + ' ' + p.unidad + '</span>'
+      + '<td><span class="stock-badge ' + stockCls + '" onclick="abrirModalStock(' + p.id + ')" title="Ajustar stock"><i class="fas ' + (p.stock===0?'fa-ban':p.stock<=p.stockMin?'fa-exclamation-triangle':'fa-check') + '"></i> ' + p.stock + ' ' + p.unidad + '</span>'
         + '<div style="font-size:.72rem;color:var(--text3);margin-top:3px">Mín: ' + p.stockMin + '</div></td>'
       + '<td class="price-cell">' + fmt(p.precioCompra) + '</td>'
       + '<td class="price-cell sell">' + fmt(p.precioVenta) + '</td>'
@@ -407,7 +407,7 @@ function renderGrid(products, q) {
       + '<div class="prod-card-name">' + hNombre + '</div>'
       + '<div class="prod-card-code">' + p.codigo + '</div>'
       + '<span class="prod-card-cat">' + p.categoria + '</span>'
-      + '<div style="margin-top:6px"><span class="stock-badge ' + stockCls + '" style="font-size:.75rem"><i class="fas ' + stockIcon + '"></i> ' + p.stock + ' ' + p.unidad + '</span></div>'
+      + '<div style="margin-top:6px"><span class="stock-badge ' + stockCls + '" onclick="abrirModalStock(' + p.id + ')" title="Ajustar stock" style="font-size:.75rem;cursor:pointer"><i class="fas ' + stockIcon + '"></i> ' + p.stock + ' ' + p.unidad + '</span></div>'
       + '<div class="prod-card-prices">'
       + '<div><div class="prod-card-price-buy">Compra: ' + fmt(p.precioCompra) + '</div>'
       + '<div class="prod-card-price-sell">' + fmt(p.precioVenta) + '</div></div>'
@@ -490,6 +490,134 @@ function initImgUpload() {
       setImgPreview('');
     });
   }
+}
+
+// ================================================================
+// MODAL AJUSTE RÁPIDO DE STOCK
+// ================================================================
+var stockProdId = null;
+
+function abrirModalStock(id) {
+  var p = STATE.productos.find(function(x){ return x.id===id; });
+  if (!p) return;
+  stockProdId = id;
+
+  // Llenar info
+  eid('stockEmoji').textContent    = p.imagen
+    ? '' : p.emoji;
+  if (p.imagen) {
+    var imgEl = document.createElement('img');
+    imgEl.src = p.imagen;
+    imgEl.style.cssText = 'width:48px;height:48px;object-fit:cover;border-radius:8px';
+    var emojiEl = eid('stockEmoji');
+    emojiEl.innerHTML = '';
+    emojiEl.appendChild(imgEl);
+  } else {
+    eid('stockEmoji').textContent = p.emoji;
+  }
+
+  eid('stockProdName').textContent = p.nombre;
+  eid('stockProdCode').textContent = p.codigo;
+  eid('stockUnidad').textContent   = p.unidad;
+  eid('stockCantidad').value       = '1';
+  eid('stockOperacion').value      = 'sub'; // por defecto "quitar"
+  eid('stockNota').value           = '';
+  actualizarStockNumero(p.stock);
+  stockPreview();
+  eid('modalStock').classList.add('open');
+}
+
+function actualizarStockNumero(val) {
+  var el = eid('stockActual');
+  if (!el) return;
+  el.textContent = val;
+  // Animación bump
+  el.classList.remove('bump');
+  void el.offsetWidth; // reflow
+  el.classList.add('bump');
+  setTimeout(function(){ el.classList.remove('bump'); }, 200);
+}
+
+function stockQuick(delta) {
+  var p = STATE.productos.find(function(x){ return x.id===stockProdId; });
+  if (!p) return;
+  var nuevo = Math.max(0, p.stock + delta);
+  p.stock = nuevo;
+  actualizarStockNumero(nuevo);
+  saveData();
+  renderInventory();
+  renderDashboard();
+  var signo = delta > 0 ? '+' : '';
+  toast(signo + delta + ' ' + p.unidad + ' en "' + p.nombre + '" → Stock: ' + nuevo, delta >= 0 ? 'success' : 'warning');
+  stockPreview();
+}
+
+function stockPreview() {
+  var p = STATE.productos.find(function(x){ return x.id===stockProdId; });
+  if (!p) return;
+  var op  = (eid('stockOperacion')||{value:'sub'}).value;
+  var qty = parseInt((eid('stockCantidad')||{value:'0'}).value) || 0;
+  var resultado;
+  if (op === 'add') resultado = p.stock + qty;
+  else if (op === 'sub') resultado = Math.max(0, p.stock - qty);
+  else resultado = qty;
+
+  var prevEl = eid('stockPreviewEl');
+  var resEl  = eid('stockResultado');
+  if (resEl) resEl.textContent = resultado;
+  if (prevEl) {
+    prevEl.className = 'stock-preview ' + (resultado === 0 ? 'warn' : resultado < p.stockMin ? 'warn' : 'ok');
+  }
+}
+
+function aplicarCambioStock() {
+  var p = STATE.productos.find(function(x){ return x.id===stockProdId; });
+  if (!p) return;
+  var op   = eid('stockOperacion').value;
+  var qty  = parseInt(eid('stockCantidad').value) || 0;
+  var nota = eid('stockNota').value.trim();
+  var antes = p.stock;
+  var nuevo;
+
+  if (op === 'add') nuevo = p.stock + qty;
+  else if (op === 'sub') { nuevo = Math.max(0, p.stock - qty); }
+  else nuevo = Math.max(0, qty);
+
+  p.stock = nuevo;
+
+  // Guardar movimiento de ajuste
+  STATE.movimientos.push({
+    id: uid(), tipo: 'ajuste',
+    productoId: p.id, productoNombre: p.nombre,
+    cantidad: Math.abs(nuevo - antes),
+    precio: 0, total: 0,
+    cliente: nota || 'Ajuste manual',
+    proveedor: nota || 'Ajuste manual',
+    unidad: p.unidad, fecha: today(), emoji: p.emoji,
+    stockAntes: antes, stockDespues: nuevo
+  });
+
+  saveData();
+  actualizarStockNumero(nuevo);
+  renderInventory();
+  renderDashboard();
+
+  var diff = nuevo - antes;
+  var signo = diff >= 0 ? '+' : '';
+  toast(signo + diff + ' ' + p.unidad + ' aplicado. Stock: ' + antes + ' → ' + nuevo, diff >= 0 ? 'success' : 'warning');
+
+  if (nuevo <= p.stockMin) {
+    setTimeout(function(){
+      toast('⚠️ Stock bajo en "' + p.nombre + '": ' + nuevo + ' ' + p.unidad, 'warning');
+    }, 800);
+  }
+
+  cerrarModalStock();
+}
+
+function cerrarModalStock() {
+  eid('modalStock').classList.remove('open');
+  stockProdId = null;
 }
 
 // ================================================================
@@ -895,8 +1023,15 @@ function initEvents() {
   if(bg) bg.addEventListener('click', function(){ setViewMode('grid'); });
   if(bl) bl.addEventListener('click', function(){ setViewMode('list'); });
 
-  // Modal
-  var bap=eid('btnAgregarProducto'); if(bap) bap.addEventListener('click', openModalNuevo);
+  // Modal stock rápido
+  var smc  = eid('stockModalClose');   if(smc)  smc.addEventListener('click', cerrarModalStock);
+  var smca = eid('stockModalCancel');  if(smca) smca.addEventListener('click', cerrarModalStock);
+  var smg  = eid('stockModalGuardar'); if(smg)  smg.addEventListener('click', aplicarCambioStock);
+  var sop  = eid('stockOperacion');    if(sop)  sop.addEventListener('change', stockPreview);
+  var ms   = eid('modalStock');
+  if(ms) ms.addEventListener('click', function(e){ if(e.target===e.currentTarget) cerrarModalStock(); });
+
+  // Modal producto  var bap=eid('btnAgregarProducto'); if(bap) bap.addEventListener('click', openModalNuevo);
   var mc=eid('modalClose');         if(mc)  mc.addEventListener('click', closeModal);
   var bcm=eid('btnCancelarModal');  if(bcm) bcm.addEventListener('click', closeModal);
   var bgp=eid('btnGuardarProducto'); if(bgp) bgp.addEventListener('click', saveProducto);

@@ -1267,3 +1267,93 @@ textarea.input-styled { resize: vertical; }
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
 }
+
+/* ============================================
+   MODAL AJUSTE RÁPIDO DE STOCK
+   ============================================ */
+.modal-stock {
+  max-width: 460px;
+}
+
+.stock-prod-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: var(--bg3);
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+}
+.stock-prod-emoji  { font-size: 2.4rem; line-height: 1; }
+.stock-prod-name   { font-size: 1rem; font-weight: 700; }
+.stock-prod-code   { font-size: .75rem; color: var(--text3); font-family: monospace; margin-top: 2px; }
+
+/* Contador grande */
+.stock-counter-block {
+  text-align: center;
+  padding: 24px 0 16px;
+}
+.stock-label  { font-size: .8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 6px; }
+.stock-number {
+  font-size: 4.5rem;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: transform .15s ease;
+}
+.stock-number.bump { transform: scale(1.15); }
+.stock-unidad { font-size: .85rem; color: var(--text3); margin-top: 4px; }
+
+/* Botones rápidos */
+.stock-quick-btns {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.sqb {
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  min-width: 54px;
+}
+.sqb:active { transform: scale(.93); }
+.sqb-minus { background: rgba(220,38,38,.2);  color: #f87171; border: 1px solid rgba(220,38,38,.3); }
+.sqb-plus  { background: rgba(22,163,74,.2);  color: #4ade80; border: 1px solid rgba(22,163,74,.3); }
+.sqb-minus:hover { background: rgba(220,38,38,.35); }
+.sqb-plus:hover  { background: rgba(22,163,74,.35); }
+
+/* Sección manual */
+.stock-manual { border-top: 1px solid var(--border); padding-top: 18px; }
+.stock-manual-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.stock-preview {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-size: .88rem;
+  color: var(--text2);
+  margin-bottom: 14px;
+  text-align: center;
+}
+.stock-preview strong { font-size: 1.1rem; color: var(--primary); }
+.stock-preview.warn   strong { color: #f87171; }
+.stock-preview.ok     strong { color: #4ade80; }
+
+/* Botón de stock en tabla y card — clickeable */
+.stock-badge { cursor: pointer; transition: filter var(--transition); }
+.stock-badge:hover { filter: brightness(1.3); }

@@ -463,6 +463,76 @@
   <!-- TOAST -->
   <div class="toast-container" id="toastContainer"></div>
 
+  <!-- MODAL AJUSTE RÁPIDO DE STOCK -->
+  <div class="modal-overlay" id="modalStock">
+    <div class="modal modal-stock animate-modal">
+      <div class="modal-header">
+        <h2 id="stockModalTitle"><i class="fas fa-boxes"></i> Ajustar Stock</h2>
+        <button class="modal-close" id="stockModalClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Info producto -->
+        <div class="stock-prod-info">
+          <div class="stock-prod-emoji" id="stockEmoji">🚲</div>
+          <div>
+            <div class="stock-prod-name" id="stockProdName">Producto</div>
+            <div class="stock-prod-code" id="stockProdCode">COD-000</div>
+          </div>
+        </div>
+
+        <!-- Contador grande -->
+        <div class="stock-counter-block">
+          <div class="stock-label">Stock actual</div>
+          <div class="stock-number" id="stockActual">0</div>
+          <div class="stock-unidad" id="stockUnidad">unidades</div>
+        </div>
+
+        <!-- Controles rápidos -->
+        <div class="stock-quick-btns">
+          <button class="sqb sqb-minus" onclick="stockQuick(-10)">-10</button>
+          <button class="sqb sqb-minus" onclick="stockQuick(-5)">-5</button>
+          <button class="sqb sqb-minus" onclick="stockQuick(-1)">-1</button>
+          <button class="sqb sqb-plus"  onclick="stockQuick(1)">+1</button>
+          <button class="sqb sqb-plus"  onclick="stockQuick(5)">+5</button>
+          <button class="sqb sqb-plus"  onclick="stockQuick(10)">+10</button>
+        </div>
+
+        <!-- Ajuste manual -->
+        <div class="stock-manual">
+          <div class="stock-manual-row">
+            <div class="form-group">
+              <label>Operación</label>
+              <select id="stockOperacion" class="select-styled">
+                <option value="add">➕ Agregar</option>
+                <option value="sub">➖ Quitar / Descontar</option>
+                <option value="set">📋 Establecer exacto</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Cantidad</label>
+              <input type="number" id="stockCantidad" class="input-styled" min="0" value="1" oninput="stockPreview()" />
+            </div>
+          </div>
+          <div class="stock-preview" id="stockPreviewEl">
+            Stock resultante: <strong id="stockResultado">0</strong>
+          </div>
+          <div class="form-group">
+            <label>Nota (opcional)</label>
+            <input type="text" id="stockNota" class="input-styled" placeholder="Ej: venta mostrador, ajuste inventario..." />
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="stockModalCancel">Cancelar</button>
+        <button class="btn btn-primary" id="stockModalGuardar">
+          <i class="fas fa-save"></i> Aplicar cambio
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- app.js cargado normal, sin trucos de cache -->
   <script src="app.js"></script>
 </body>
