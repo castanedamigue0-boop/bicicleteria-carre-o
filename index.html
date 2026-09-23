@@ -422,7 +422,24 @@
             <textarea id="prodDescripcion" class="input-styled" rows="2" placeholder="Descripción del producto..."></textarea>
           </div>
           <div class="form-group span2">
-            <label>Emoji / Ícono</label>
+            <label>Imagen del Producto</label>
+            <div class="img-upload-area" id="imgUploadArea">
+              <img id="imgPreview" src="img/placeholder.svg" alt="Vista previa" />
+              <div class="img-upload-actions">
+                <label class="btn btn-outline btn-sm" for="imgFileInput">
+                  <i class="fas fa-upload"></i> Subir imagen
+                </label>
+                <button type="button" class="btn btn-danger btn-sm" id="btnQuitarImg">
+                  <i class="fas fa-trash"></i> Quitar
+                </button>
+              </div>
+              <p class="img-upload-hint">JPG, PNG, WEBP — máx 2MB</p>
+            </div>
+            <input type="file" id="imgFileInput" accept="image/*" style="display:none" />
+            <input type="hidden" id="prodImagen" value="" />
+          </div>
+          <div class="form-group span2">
+            <label>Emoji / Ícono (se usa si no hay imagen)</label>
             <div class="emoji-picker" id="emojiPicker"></div>
             <input type="hidden" id="prodEmoji" value="🚲" />
           </div>

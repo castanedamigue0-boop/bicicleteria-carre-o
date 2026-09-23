@@ -347,8 +347,11 @@ function renderList(products, q) {
     var stockCls  = p.stock===0?'stock-empty':p.stock<=p.stockMin?'stock-low':'stock-ok';
     var hNombre   = highlight(p.nombre, q);
     var hCodigo   = highlight(p.codigo, q);
+    var thumbHtml = p.imagen
+      ? '<img class="prod-thumb" src="' + p.imagen + '" alt="' + p.nombre + '" />'
+      : '<div class="prod-thumb-emoji">' + p.emoji + '</div>';
     return '<tr>'
-      + '<td class="prod-emoji-cell">' + p.emoji + '</td>'
+      + '<td>' + thumbHtml + '</td>'
       + '<td><code style="font-size:.78rem;color:var(--text3)">' + hCodigo + '</code></td>'
       + '<td><div style="font-weight:600">' + hNombre + '</div>'
         + (p.descripcion?'<div style="font-size:.75rem;color:var(--text3);margin-top:2px">'+p.descripcion.substring(0,45)+(p.descripcion.length>45?'...':'')+'</div>':'')
@@ -394,8 +397,11 @@ function renderGrid(products, q) {
     var stockCls  = p.stock===0?'stock-empty':p.stock<=p.stockMin?'stock-low':'stock-ok';
     var stockIcon = p.stock===0?'fa-ban':p.stock<=p.stockMin?'fa-exclamation-triangle':'fa-check';
     var hNombre   = highlight(p.nombre, q);
+    var topContent = p.imagen
+      ? '<img src="' + p.imagen + '" alt="' + p.nombre + '" style="width:100%;height:100%;object-fit:cover" />'
+      : '<span style="font-size:3rem">' + p.emoji + '</span>';
     return '<div class="prod-card">'
-      + '<div class="prod-card-top"><span style="font-size:3rem">' + p.emoji + '</span>'
+      + '<div class="prod-card-top">' + topContent
       + '<span class="prod-card-status"><span class="status-badge ' + (p.activo?'status-active':'status-inactive') + '" style="font-size:.68rem">' + (p.activo?'Activo':'Inactivo') + '</span></span></div>'
       + '<div class="prod-card-body">'
       + '<div class="prod-card-name">' + hNombre + '</div>'
@@ -417,6 +423,68 @@ function renderGrid(products, q) {
 }
 
 // ================================================================
+// IMAGEN DE PRODUCTO
+// ================================================================
+function setImgPreview(src) {
+  var preview = eid('imgPreview');
+  var inp     = eid('prodImagen');
+  if (!preview || !inp) return;
+  if (src) {
+    preview.src = src;
+    inp.value   = src;
+  } else {
+    preview.src = 'img/placeholder.svg';
+    inp.value   = '';
+  }
+}
+
+function initImgUpload() {
+  var fileInput = eid('imgFileInput');
+  var area      = eid('imgUploadArea');
+  var quitarBtn = eid('btnQuitarImg');
+
+  if (fileInput) {
+    fileInput.addEventListener('change', function() {
+      var file = fileInput.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { toast('La imagen supera los 2MB', 'error'); return; }
+      var reader = new FileReader();
+      reader.onload = function(e) { setImgPreview(e.target.result); };
+      reader.readAsDataURL(file);
+      fileInput.value = '';
+    });
+  }
+
+  // Clic en el área también abre el selector
+  if (area) {
+    area.addEventListener('click', function(e) {
+      if (e.target.closest('.btn')) return; // no disparar si hizo clic en botón
+      if (fileInput) fileInput.click();
+    });
+    // Drag & drop
+    area.addEventListener('dragover', function(e) { e.preventDefault(); area.classList.add('drag-over'); });
+    area.addEventListener('dragleave', function()  { area.classList.remove('drag-over'); });
+    area.addEventListener('drop', function(e) {
+      e.preventDefault();
+      area.classList.remove('drag-over');
+      var file = e.dataTransfer.files[0];
+      if (!file || !file.type.startsWith('image/')) return;
+      if (file.size > 2 * 1024 * 1024) { toast('La imagen supera los 2MB', 'error'); return; }
+      var reader = new FileReader();
+      reader.onload = function(ev) { setImgPreview(ev.target.result); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (quitarBtn) {
+    quitarBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      setImgPreview('');
+    });
+  }
+}
+
+// ================================================================
 // CRUD PRODUCTOS
 // ================================================================
 function openModalNuevo() {
@@ -433,6 +501,7 @@ function openModalNuevo() {
   eid('prodUnidad').value       = 'unidad';
   eid('prodDescripcion').value  = '';
   eid('prodEmoji').value        = '🚲';
+  setImgPreview('');
   renderEmojiPicker('🚲');
   eid('modalProducto').classList.add('open');
 }
@@ -453,6 +522,7 @@ function editProducto(id) {
   eid('prodUnidad').value       = p.unidad;
   eid('prodDescripcion').value  = p.descripcion || '';
   eid('prodEmoji').value        = p.emoji;
+  setImgPreview(p.imagen || '');
   renderEmojiPicker(p.emoji);
   eid('modalProducto').classList.add('open');
 }
@@ -468,6 +538,7 @@ function saveProducto() {
   var descripcion  = eid('prodDescripcion').value.trim();
   var emoji        = eid('prodEmoji').value;
   var codigo       = eid('prodCodigo').value.trim() || autoCode();
+  var imagen       = eid('prodImagen').value || '';
 
   if (!nombre || !categoria) { toast('Nombre y categoría son obligatorios', 'error'); return; }
   if (precioVenta <= 0)      { toast('El precio de venta debe ser mayor a 0', 'warning'); return; }
@@ -475,11 +546,11 @@ function saveProducto() {
   if (STATE.editingId) {
     var idx = STATE.productos.findIndex(function(x){ return x.id===STATE.editingId; });
     if (idx !== -1) {
-      STATE.productos[idx] = Object.assign({}, STATE.productos[idx], { nombre, categoria, stock, stockMin, precioCompra, precioVenta, unidad, descripcion, emoji, codigo });
+      STATE.productos[idx] = Object.assign({}, STATE.productos[idx], { nombre, categoria, stock, stockMin, precioCompra, precioVenta, unidad, descripcion, emoji, codigo, imagen });
       toast('✏️ "' + nombre + '" actualizado', 'success');
     }
   } else {
-    STATE.productos.push({ id:uid(), activo:true, vendidos:0, nombre, categoria, stock, stockMin, precioCompra, precioVenta, unidad, descripcion, emoji, codigo });
+    STATE.productos.push({ id:uid(), activo:true, vendidos:0, nombre, categoria, stock, stockMin, precioCompra, precioVenta, unidad, descripcion, emoji, codigo, imagen });
     toast('🎉 "' + nombre + '" agregado', 'success');
   }
   saveData();
@@ -823,6 +894,9 @@ function initEvents() {
   var bgp=eid('btnGuardarProducto'); if(bgp) bgp.addEventListener('click', saveProducto);
   var mo=eid('modalProducto');
   if(mo) mo.addEventListener('click', function(e){ if(e.target===e.currentTarget) closeModal(); });
+
+  // Imagen upload
+  initImgUpload();
 
   // Buscador inventario
   var is=eid('invSearch');       if(is)  is.addEventListener('input', renderInventory);

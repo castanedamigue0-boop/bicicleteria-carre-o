@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <rect width="200" height="200" fill="#1e293b"/>
+  <rect x="40" y="40" width="120" height="120" rx="12" fill="#334155"/>
+  <text x="100" y="95" text-anchor="middle" font-size="40" fill="#475569">🚲</text>
+  <text x="100" y="130" text-anchor="middle" font-size="13" fill="#64748b" font-family="sans-serif">Sin imagen</text>
+</svg>
