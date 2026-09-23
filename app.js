@@ -113,7 +113,16 @@ function navigate(section) {
   if (pt) pt.textContent = TITLES[section] || section;
 
   if (section === 'dashboard')   renderDashboard();
-  if (section === 'inventario')  renderInventory();
+  if (section === 'inventario') {
+    // sincronizar botones con el modo guardado
+    eid('btnViewGrid')?.classList.toggle('active', viewMode === 'grid');
+    eid('btnViewList')?.classList.toggle('active', viewMode === 'list');
+    const tableWrap = document.querySelector('.table-wrapper');
+    if (tableWrap) tableWrap.style.display = viewMode === 'list' ? 'block' : 'none';
+    const grid = eid('productsGrid');
+    if (grid) grid.style.display = viewMode === 'grid' ? 'grid' : 'none';
+    renderInventory();
+  }
   if (section === 'ventas')      renderVentasSelect();
   if (section === 'compras')     renderComprasSelect();
   if (section === 'movimientos') renderMovimientos();
@@ -212,6 +221,27 @@ const CAT_META = {
   'Electricidad':         { emoji:'⚡', color:'#4f46e5' },
 };
 let activeChip = '';
+let viewMode   = localStorage.getItem('bicistore_view') || 'grid'; // 'grid' | 'list'
+
+function setViewMode(mode) {
+  viewMode = mode;
+  localStorage.setItem('bicistore_view', mode);
+  // actualizar botones
+  eid('btnViewGrid')?.classList.toggle('active', mode === 'grid');
+  eid('btnViewList')?.classList.toggle('active', mode === 'list');
+  // mostrar/ocultar tabla vs grid
+  const tableWrap = document.querySelector('.table-wrapper');
+  if (tableWrap) tableWrap.style.display = mode === 'list' ? 'block' : 'none';
+  let gridWrap = eid('productsGrid');
+  if (!gridWrap) {
+    gridWrap = document.createElement('div');
+    gridWrap.id = 'productsGrid';
+    gridWrap.className = 'products-grid';
+    tableWrap?.parentNode.insertBefore(gridWrap, tableWrap.nextSibling);
+  }
+  gridWrap.style.display = mode === 'grid' ? 'grid' : 'none';
+  renderInventory();
+}
 
 function renderCategoryChips() {
   const container = eid('categoryChips');
@@ -267,16 +297,16 @@ function renderInventory() {
   renderCategoryChips();
 
   const products = getFilteredProducts();
-  const tbody    = eid('inventoryBody');
-  const empty    = eid('tableEmpty');
   const q        = ((eid('invSearch') || {}).value || '').toLowerCase().trim();
 
   // Contador búsqueda
   const resEl = eid('invSearchResults');
   if (resEl) {
     if (q) {
-      resEl.textContent = products.length ? products.length + ' resultado' + (products.length !== 1 ? 's' : '') + ' encontrado' + (products.length !== 1 ? 's' : '') : 'Sin resultados';
-      resEl.className   = 'inv-search-results ' + (products.length ? 'has-results' : 'no-results');
+      resEl.textContent = products.length
+        ? products.length + ' resultado' + (products.length !== 1 ? 's' : '') + ' encontrado' + (products.length !== 1 ? 's' : '')
+        : 'Sin resultados';
+      resEl.className = 'inv-search-results ' + (products.length ? 'has-results' : 'no-results');
     } else {
       resEl.textContent = '';
       resEl.className   = 'inv-search-results';
@@ -286,6 +316,17 @@ function renderInventory() {
   const clearBtn = eid('invSearchClear');
   if (clearBtn) clearBtn.classList.toggle('visible', q.length > 0);
 
+  if (viewMode === 'grid') {
+    renderGrid(products, q);
+  } else {
+    renderList(products, q);
+  }
+}
+
+// ---- VISTA LISTA (tabla) ----
+function renderList(products, q) {
+  const tbody = eid('inventoryBody');
+  const empty = eid('tableEmpty');
   if (!tbody) return;
 
   if (!products.length) {
@@ -321,6 +362,70 @@ function renderInventory() {
         + '<button class="btn btn-sm btn-outline btn-icon" title="' + (p.activo?'Desactivar':'Activar') + '" onclick="toggleActivo(' + p.id + ')"><i class="fas ' + (p.activo?'fa-eye-slash':'fa-eye') + '"></i></button>'
         + '<button class="btn btn-sm btn-danger btn-icon" title="Eliminar" onclick="deleteProducto(' + p.id + ')"><i class="fas fa-trash"></i></button>'
       + '</td></tr>';
+  }).join('');
+}
+
+// ---- VISTA CUADRÍCULA (cards) ----
+function renderGrid(products, q) {
+  // asegurar que la tabla esté oculta
+  const tableWrap = document.querySelector('.table-wrapper');
+  if (tableWrap) tableWrap.style.display = 'none';
+
+  let grid = eid('productsGrid');
+  if (!grid) {
+    grid = document.createElement('div');
+    grid.id = 'productsGrid';
+    grid.className = 'products-grid';
+    if (tableWrap) tableWrap.parentNode.insertBefore(grid, tableWrap.nextSibling);
+    else eid('section-inventario').appendChild(grid);
+  }
+  grid.style.display = 'grid';
+
+  if (!products.length) {
+    grid.innerHTML = '<div class="grid-empty"><i class="fas fa-box-open"></i><p>No hay productos</p></div>';
+    return;
+  }
+
+  grid.innerHTML = products.map(p => {
+    const margin    = p.precioCompra > 0 ? ((p.precioVenta - p.precioCompra) / p.precioVenta * 100).toFixed(1) : 0;
+    const marginCls = margin >= 30 ? 'margin-good' : margin >= 15 ? 'margin-mid' : 'margin-bad';
+    const stockCls  = p.stock === 0 ? 'stock-empty' : p.stock <= p.stockMin ? 'stock-low' : 'stock-ok';
+    const stockIcon = p.stock === 0 ? 'fa-ban' : p.stock <= p.stockMin ? 'fa-exclamation-triangle' : 'fa-check';
+    const hNombre   = highlight(p.nombre, q);
+    return '<div class="prod-card">'
+      // TOP — emoji grande
+      + '<div class="prod-card-top">'
+      +   '<span style="font-size:3rem">' + p.emoji + '</span>'
+      +   '<span class="prod-card-status">'
+      +     '<span class="status-badge ' + (p.activo?'status-active':'status-inactive') + '" style="font-size:.68rem">' + (p.activo?'Activo':'Inactivo') + '</span>'
+      +   '</span>'
+      + '</div>'
+      // BODY
+      + '<div class="prod-card-body">'
+      +   '<div class="prod-card-name">' + hNombre + '</div>'
+      +   '<div class="prod-card-code">' + p.codigo + '</div>'
+      +   '<span class="prod-card-cat">' + p.categoria + '</span>'
+      +   '<div style="margin-top:6px">'
+      +     '<span class="stock-badge ' + stockCls + '" style="font-size:.75rem">'
+      +       '<i class="fas ' + stockIcon + '"></i> ' + p.stock + ' ' + p.unidad
+      +     '</span>'
+      +   '</div>'
+      +   '<div class="prod-card-prices">'
+      +     '<div><div class="prod-card-price-buy">Compra: ' + fmt(p.precioCompra) + '</div>'
+      +     '<div class="prod-card-price-sell">' + fmt(p.precioVenta) + '</div></div>'
+      +     '<span class="margin-cell ' + marginCls + '" style="font-size:.8rem">' + margin + '%</span>'
+      +   '</div>'
+      + '</div>'
+      // FOOTER — acciones
+      + '<div class="prod-card-footer">'
+      +   '<span style="font-size:.72rem;color:var(--text3)">Mín: ' + p.stockMin + '</span>'
+      +   '<div class="prod-card-actions">'
+      +     '<button class="btn btn-sm btn-primary btn-icon" title="Editar" onclick="editProducto(' + p.id + ')"><i class="fas fa-edit"></i></button>'
+      +     '<button class="btn btn-sm btn-outline btn-icon" title="' + (p.activo?'Desactivar':'Activar') + '" onclick="toggleActivo(' + p.id + ')"><i class="fas ' + (p.activo?'fa-eye-slash':'fa-eye') + '"></i></button>'
+      +     '<button class="btn btn-sm btn-danger btn-icon" title="Eliminar" onclick="deleteProducto(' + p.id + ')"><i class="fas fa-trash"></i></button>'
+      +   '</div>'
+      + '</div>'
+    + '</div>';
   }).join('');
 }
 
@@ -708,6 +813,8 @@ function initEvents() {
     eid('mainContent')?.classList.toggle('expanded');
   });
   eid('menuBtn')?.addEventListener('click', () => eid('sidebar')?.classList.toggle('mobile-open'));
+  eid('btnViewGrid')?.addEventListener('click', () => setViewMode('grid'));
+  eid('btnViewList')?.addEventListener('click', () => setViewMode('list'));
   eid('btnAgregarProducto')?.addEventListener('click', openModalNuevo);
   eid('modalClose')?.addEventListener('click', closeModal);
   eid('btnCancelarModal')?.addEventListener('click', closeModal);
