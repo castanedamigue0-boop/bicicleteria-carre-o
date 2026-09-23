@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🚲 BiciStore - Inventario</title>
+  <link rel="stylesheet" href="libs/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="libs/fonts/poppins.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- LOADER -->
+  <div id="loader">
+    <div class="loader-bike">
+      <i class="fas fa-bicycle"></i>
+      <p>Cargando Bicicleteria carreño...</p>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <i class="fas fa-bicycle"></i>
+        <span>Bicicleria carreño</span>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-section="dashboard">
+        <i class="fas fa-chart-pie"></i><span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-section="inventario">
+        <i class="fas fa-boxes"></i><span>Inventario</span>
+      </a>
+      <a href="#" class="nav-item" data-section="ventas">
+        <i class="fas fa-shopping-cart"></i><span>Nueva Venta</span>
+      </a>
+      <a href="#" class="nav-item" data-section="compras">
+        <i class="fas fa-truck"></i><span>Nueva Compra</span>
+      </a>
+      <a href="#" class="nav-item" data-section="movimientos">
+        <i class="fas fa-exchange-alt"></i><span>Movimientos</span>
+      </a>
+      <a href="#" class="nav-item" data-section="calculadora">
+        <i class="fas fa-calculator"></i><span>Calculadora</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <i class="fas fa-cog"></i><span>BiciStore v1.0</span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content" id="mainContent">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+      </div>
+      <div class="topbar-right">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="globalSearch" placeholder="Buscar producto..." />
+        </div>
+        <div class="notif-badge">
+          <i class="fas fa-bell"></i>
+          <span class="badge" id="alertBadge">0</span>
+        </div>
+        <div class="user-avatar"><i class="fas fa-user-circle"></i></div>
+      </div>
+    </header>
+
+    <!-- SECTIONS -->
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="section active" id="section-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card card-blue animate-in">
+          <div class="stat-icon"><i class="fas fa-boxes"></i></div>
+          <div class="stat-info">
+            <h3 id="totalProductos">0</h3>
+            <p>Total Productos</p>
+          </div>
+          <div class="stat-wave"></div>
+        </div>
+        <div class="stat-card card-green animate-in delay-1">
+          <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+          <div class="stat-info">
+            <h3 id="totalValor">$0</h3>
+            <p>Valor Inventario</p>
+          </div>
+          <div class="stat-wave"></div>
+        </div>
+        <div class="stat-card card-orange animate-in delay-2">
+          <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
+          <div class="stat-info">
+            <h3 id="totalVentas">$0</h3>
+            <p>Ventas del Mes</p>
+          </div>
+          <div class="stat-wave"></div>
+        </div>
+        <div class="stat-card card-red animate-in delay-3">
+          <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+          <div class="stat-info">
+            <h3 id="stockBajo">0</h3>
+            <p>Stock Bajo</p>
+          </div>
+          <div class="stat-wave"></div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="card animate-in delay-2">
+          <div class="card-header">
+            <h2><i class="fas fa-chart-bar"></i> Movimientos Recientes</h2>
+          </div>
+          <div class="recent-moves" id="recentMoves">
+            <p class="empty-msg">Sin movimientos aún</p>
+          </div>
+        </div>
+        <div class="card animate-in delay-3">
+          <div class="card-header">
+            <h2><i class="fas fa-fire"></i> Top Productos</h2>
+          </div>
+          <div class="top-products" id="topProducts">
+            <p class="empty-msg">Sin datos aún</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card animate-in delay-4">
+        <div class="card-header">
+          <h2><i class="fas fa-exclamation-circle"></i> Alertas de Stock</h2>
+        </div>
+        <div class="alerts-list" id="alertsList">
+          <p class="empty-msg">Sin alertas</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== INVENTARIO ===== -->
+    <section class="section" id="section-inventario">
+      <!-- CHIPS DE CATEGORÍAS -->
+      <div class="category-chips" id="categoryChips"></div>
+
+      <!-- BUSCADOR DE INVENTARIO -->
+      <div class="inv-search-bar animate-in">
+        <div class="inv-search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="invSearch" placeholder="Buscar por nombre o código... ej: BIC-001" autocomplete="off" />
+          <button class="inv-search-clear" id="invSearchClear" title="Limpiar">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <span class="inv-search-results" id="invSearchResults"></span>
+      </div>
+
+      <div class="section-toolbar">
+        <div class="filters">
+          <select id="filterCategoria" class="select-styled">
+            <option value="">Todas las categorías</option>
+            <option value="Bicicletas">Bicicletas</option>
+            <option value="Llantas y Neumáticos">Llantas y Neumáticos</option>
+            <option value="Frenos">Frenos</option>
+            <option value="Transmisión">Transmisión</option>
+            <option value="Manillar y Potencia">Manillar y Potencia</option>
+            <option value="Sillín">Sillín</option>
+            <option value="Iluminación">Iluminación</option>
+            <option value="Accesorios">Accesorios</option>
+            <option value="Herramientas">Herramientas</option>
+            <option value="Lubricantes">Lubricantes</option>
+            <option value="Ropa y Equipamiento">Ropa y Equipamiento</option>
+            <option value="Electricidad">Electricidad</option>
+          </select>
+          <select id="filterStock" class="select-styled">
+            <option value="">Todo el stock</option>
+            <option value="bajo">Stock bajo</option>
+            <option value="normal">Stock normal</option>
+            <option value="agotado">Agotado</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" id="btnAgregarProducto">
+          <i class="fas fa-plus"></i> Agregar Producto
+        </button>
+      </div>
+
+      <div class="table-wrapper card animate-in">
+        <table class="inventory-table" id="inventoryTable">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Código</th>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Stock</th>
+              <th>Precio Compra</th>
+              <th>Precio Venta</th>
+              <th>Margen</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryBody"></tbody>
+        </table>
+        <div class="table-empty" id="tableEmpty">
+          <i class="fas fa-box-open"></i>
+          <p>No hay productos. ¡Agrega el primero!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VENTAS ===== -->
+    <section class="section" id="section-ventas">
+      <div class="transaction-container">
+        <div class="card animate-in">
+          <div class="card-header">
+            <h2><i class="fas fa-shopping-cart"></i> Registrar Venta</h2>
+          </div>
+          <div class="transaction-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Producto</label>
+                <select id="ventaProducto" class="select-styled">
+                  <option value="">Selecciona un producto</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Cantidad</label>
+                <input type="number" id="ventaCantidad" class="input-styled" min="1" value="1" />
+              </div>
+              <div class="form-group">
+                <label>Precio Unitario</label>
+                <input type="number" id="ventaPrecio" class="input-styled" readonly />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Cliente (opcional)</label>
+                <input type="text" id="ventaCliente" class="input-styled" placeholder="Nombre del cliente" />
+              </div>
+              <div class="form-group">
+                <label>Descuento %</label>
+                <input type="number" id="ventaDescuento" class="input-styled" min="0" max="100" value="0" />
+              </div>
+              <div class="form-group">
+                <label>Total</label>
+                <input type="text" id="ventaTotal" class="input-styled total-display" readonly />
+              </div>
+            </div>
+            <button class="btn btn-success btn-full" id="btnRegistrarVenta">
+              <i class="fas fa-check-circle"></i> Registrar Venta
+            </button>
+          </div>
+        </div>
+
+        <div class="card animate-in delay-2">
+          <div class="card-header">
+            <h2><i class="fas fa-receipt"></i> Historial de Ventas</h2>
+          </div>
+          <div class="moves-list" id="ventasList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== COMPRAS ===== -->
+    <section class="section" id="section-compras">
+      <div class="transaction-container">
+        <div class="card animate-in">
+          <div class="card-header">
+            <h2><i class="fas fa-truck"></i> Registrar Compra / Entrada</h2>
+          </div>
+          <div class="transaction-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Producto</label>
+                <select id="compraProducto" class="select-styled">
+                  <option value="">Selecciona un producto</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Cantidad</label>
+                <input type="number" id="compraCantidad" class="input-styled" min="1" value="1" />
+              </div>
+              <div class="form-group">
+                <label>Precio de Compra</label>
+                <input type="number" id="compraPrecio" class="input-styled" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Proveedor</label>
+                <input type="text" id="compraProveedor" class="input-styled" placeholder="Nombre del proveedor" />
+              </div>
+              <div class="form-group">
+                <label>Total Compra</label>
+                <input type="text" id="compraTotal" class="input-styled total-display" readonly />
+              </div>
+            </div>
+            <button class="btn btn-warning btn-full" id="btnRegistrarCompra">
+              <i class="fas fa-plus-circle"></i> Registrar Entrada
+            </button>
+          </div>
+        </div>
+
+        <div class="card animate-in delay-2">
+          <div class="card-header">
+            <h2><i class="fas fa-history"></i> Historial de Compras</h2>
+          </div>
+          <div class="moves-list" id="comprasList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== MOVIMIENTOS ===== -->
+    <section class="section" id="section-movimientos">
+      <div class="card animate-in">
+        <div class="card-header">
+          <h2><i class="fas fa-exchange-alt"></i> Todos los Movimientos</h2>
+          <div class="header-actions">
+            <select id="filterMovType" class="select-styled">
+              <option value="">Todos</option>
+              <option value="venta">Ventas</option>
+              <option value="compra">Compras</option>
+            </select>
+            <button class="btn btn-outline" id="btnExportCSV">
+              <i class="fas fa-file-csv"></i> Exportar CSV
+            </button>
+          </div>
+        </div>
+        <div class="summary-bar">
+          <div class="summary-item green">
+            <i class="fas fa-arrow-up"></i>
+            <div>
+              <span>Ingresos Totales</span>
+              <strong id="sumIngresos">$0</strong>
+            </div>
+          </div>
+          <div class="summary-item red">
+            <i class="fas fa-arrow-down"></i>
+            <div>
+              <span>Egresos Totales</span>
+              <strong id="sumEgresos">$0</strong>
+            </div>
+          </div>
+          <div class="summary-item blue">
+            <i class="fas fa-balance-scale"></i>
+            <div>
+              <span>Balance</span>
+              <strong id="sumBalance">$0</strong>
+            </div>
+          </div>
+        </div>
+        <div class="moves-list" id="allMovesList"></div>
+      </div>
+    </section>
+
+    <!-- ===== CALCULADORA ===== -->
+    <section class="section" id="section-calculadora">
+      <div class="calc-container">
+        <div class="card calc-card animate-in">
+          <div class="card-header">
+            <h2><i class="fas fa-calculator"></i> Calculadora</h2>
+          </div>
+          <div class="calculator">
+            <div class="calc-display">
+              <div class="calc-expression" id="calcExpression"></div>
+              <div class="calc-result" id="calcResult">0</div>
+            </div>
+            <div class="calc-buttons">
+              <button class="calc-btn span2 btn-clear" onclick="calcClear()">AC</button>
+              <button class="calc-btn btn-func" onclick="calcBackspace()"><i class="fas fa-backspace"></i></button>
+              <button class="calc-btn btn-op" onclick="calcOp('%')">%</button>
+              <button class="calc-btn btn-num" onclick="calcNum('7')">7</button>
+              <button class="calc-btn btn-num" onclick="calcNum('8')">8</button>
+              <button class="calc-btn btn-num" onclick="calcNum('9')">9</button>
+              <button class="calc-btn btn-op" onclick="calcOp('/')">÷</button>
+              <button class="calc-btn btn-num" onclick="calcNum('4')">4</button>
+              <button class="calc-btn btn-num" onclick="calcNum('5')">5</button>
+              <button class="calc-btn btn-num" onclick="calcNum('6')">6</button>
+              <button class="calc-btn btn-op" onclick="calcOp('*')">×</button>
+              <button class="calc-btn btn-num" onclick="calcNum('1')">1</button>
+              <button class="calc-btn btn-num" onclick="calcNum('2')">2</button>
+              <button class="calc-btn btn-num" onclick="calcNum('3')">3</button>
+              <button class="calc-btn btn-op" onclick="calcOp('-')">−</button>
+              <button class="calc-btn btn-num" onclick="calcNum('0')">0</button>
+              <button class="calc-btn btn-num" onclick="calcNum('.')">.</button>
+              <button class="calc-btn btn-equal" onclick="calcEqual()">=</button>
+              <button class="calc-btn btn-op" onclick="calcOp('+')">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card animate-in delay-2">
+          <div class="card-header">
+            <h2><i class="fas fa-percent"></i> Calculadora de Rentabilidad</h2>
+          </div>
+          <div class="profit-calc">
+            <div class="form-group">
+              <label>Precio de Compra</label>
+              <input type="number" id="pcCompra" class="input-styled" placeholder="0" oninput="calcProfit()" />
+            </div>
+            <div class="form-group">
+              <label>Precio de Venta</label>
+              <input type="number" id="pcVenta" class="input-styled" placeholder="0" oninput="calcProfit()" />
+            </div>
+            <div class="form-group">
+              <label>Cantidad</label>
+              <input type="number" id="pcCantidad" class="input-styled" placeholder="1" value="1" oninput="calcProfit()" />
+            </div>
+            <div class="profit-results">
+              <div class="profit-item">
+                <span>Ganancia Unitaria</span>
+                <strong id="gananciaUnit" class="green-text">$0</strong>
+              </div>
+              <div class="profit-item">
+                <span>Margen %</span>
+                <strong id="margenPct" class="blue-text">0%</strong>
+              </div>
+              <div class="profit-item">
+                <span>Ganancia Total</span>
+                <strong id="gananciaTotal" class="green-text">$0</strong>
+              </div>
+              <div class="profit-item">
+                <span>ROI</span>
+                <strong id="roiVal" class="orange-text">0%</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- /main -->
+
+  <!-- ===== MODAL AGREGAR/EDITAR PRODUCTO ===== -->
+  <div class="modal-overlay" id="modalProducto">
+    <div class="modal animate-modal">
+      <div class="modal-header">
+        <h2 id="modalTitle"><i class="fas fa-plus"></i> Agregar Producto</h2>
+        <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="prodId" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Código</label>
+            <input type="text" id="prodCodigo" class="input-styled" placeholder="EJ: BIC-001" />
+          </div>
+          <div class="form-group">
+            <label>Nombre del Producto *</label>
+            <input type="text" id="prodNombre" class="input-styled" placeholder="Nombre del producto" />
+          </div>
+          <div class="form-group">
+            <label>Categoría *</label>
+            <select id="prodCategoria" class="select-styled">
+              <option value="">Selecciona categoría</option>
+              <option>Bicicletas</option>
+              <option>Llantas y Neumáticos</option>
+              <option>Frenos</option>
+              <option>Transmisión</option>
+              <option>Manillar y Potencia</option>
+              <option>Sillín</option>
+              <option>Iluminación</option>
+              <option>Accesorios</option>
+              <option>Herramientas</option>
+              <option>Lubricantes</option>
+              <option>Ropa y Equipamiento</option>
+              <option>Electricidad</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Stock Actual *</label>
+            <input type="number" id="prodStock" class="input-styled" min="0" value="0" />
+          </div>
+          <div class="form-group">
+            <label>Stock Mínimo</label>
+            <input type="number" id="prodStockMin" class="input-styled" min="0" value="5" />
+          </div>
+          <div class="form-group">
+            <label>Precio de Compra *</label>
+            <input type="number" id="prodPrecioCompra" class="input-styled" min="0" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>Precio de Venta *</label>
+            <input type="number" id="prodPrecioVenta" class="input-styled" min="0" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>Unidad</label>
+            <select id="prodUnidad" class="select-styled">
+              <option>unidad</option>
+              <option>par</option>
+              <option>caja</option>
+              <option>litro</option>
+              <option>metro</option>
+              <option>kit</option>
+            </select>
+          </div>
+          <div class="form-group span2">
+            <label>Descripción</label>
+            <textarea id="prodDescripcion" class="input-styled" rows="2" placeholder="Descripción del producto..."></textarea>
+          </div>
+          <div class="form-group span2">
+            <label>Emoji / Ícono</label>
+            <div class="emoji-picker" id="emojiPicker"></div>
+            <input type="hidden" id="prodEmoji" value="🚲" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="btnCancelarModal">Cancelar</button>
+        <button class="btn btn-primary" id="btnGuardarProducto">
+          <i class="fas fa-save"></i> Guardar Producto
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // Limpia localStorage si hay datos corruptos
+    try { JSON.parse(localStorage.getItem('bicistore_productos') || '[]'); }
+    catch(e) { localStorage.clear(); }
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
