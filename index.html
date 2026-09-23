@@ -576,7 +576,13 @@
     // Limpia localStorage si hay datos corruptos
     try { JSON.parse(localStorage.getItem('bicistore_productos') || '[]'); }
     catch(e) { localStorage.clear(); }
+
+    // Fuerza recarga de app.js sin caché
+    (function() {
+      var s = document.createElement('script');
+      s.src = 'app.js?v=' + Date.now();
+      document.body.appendChild(s);
+    })();
   </script>
-  <script src="app.js"></script>
 </body>
 </html>
