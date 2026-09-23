@@ -4,17 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🚲 BiciStore - Inventario</title>
+
+  <!-- Loader CSS inline — no depende de ninguna librería externa -->
+  <style>
+    #loader {
+      position: fixed; inset: 0;
+      background: #0f172a;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+    }
+    #loader.hidden { display: none !important; }
+    .loader-inner { text-align: center; }
+    .loader-emoji {
+      font-size: 5rem;
+      display: block;
+      animation: loaderBike 1s ease-in-out infinite alternate;
+    }
+    .loader-inner p {
+      margin-top: 18px;
+      color: #94a3b8;
+      font-size: 1rem;
+      font-family: sans-serif;
+      letter-spacing: 2px;
+    }
+    .loader-bar {
+      width: 180px;
+      height: 4px;
+      background: #1e293b;
+      border-radius: 10px;
+      margin: 14px auto 0;
+      overflow: hidden;
+    }
+    .loader-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563eb, #7c3aed);
+      border-radius: 10px;
+      animation: loaderFill 1s ease forwards;
+    }
+    @keyframes loaderBike {
+      from { transform: translateX(-20px) rotate(-8deg); }
+      to   { transform: translateX(20px)  rotate(8deg);  }
+    }
+    @keyframes loaderFill {
+      from { width: 0%; }
+      to   { width: 100%; }
+    }
+  </style>
+
   <link rel="stylesheet" href="libs/fontawesome/css/all.min.css" />
   <link rel="stylesheet" href="libs/fonts/poppins.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- LOADER -->
+  <!-- LOADER — usa solo CSS inline y emoji, sin depender de Font Awesome -->
   <div id="loader">
-    <div class="loader-bike">
-      <i class="fas fa-bicycle"></i>
-      <p>Cargando Bicicleteria carreño...</p>
+    <div class="loader-inner">
+      <span class="loader-emoji">🚲</span>
+      <p>Cargando Bicicletería Carreño...</p>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
     </div>
   </div>
 
