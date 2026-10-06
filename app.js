@@ -100,32 +100,34 @@ function saveData() {
 }
 
 function loadData() {
-  var CATALOG_VERSION = 4; // incrementar cuando se agregan productos nuevos al default
+  var CATALOG_VERSION = 4;
+  var savedVersion = parseInt(localStorage.getItem('bicistore_catalog_v') || '0');
+
+  // Si la versión guardada es menor, limpiar TODO y cargar fresco
+  if (savedVersion < CATALOG_VERSION) {
+    localStorage.clear();
+    STATE.productos   = [];
+    STATE.movimientos = [];
+    STATE.nextId      = 1;
+    PRODUCTOS_DEFAULT.forEach(function(d) {
+      STATE.productos.push(Object.assign({ id:uid(), activo:true, vendidos:0 }, d));
+    });
+    localStorage.setItem('bicistore_catalog_v', CATALOG_VERSION);
+    saveData();
+    return;
+  }
+
+  // Versión actual — cargar normalmente
   try {
     var p = localStorage.getItem('bicistore_productos');
     var m = localStorage.getItem('bicistore_movimientos');
     var n = localStorage.getItem('bicistore_nextId');
-    var v = parseInt(localStorage.getItem('bicistore_catalog_v') || '0');
     if (p) STATE.productos   = JSON.parse(p);
     if (m) STATE.movimientos = JSON.parse(m);
     if (n) STATE.nextId      = JSON.parse(n);
-
-    // Si hay versión anterior, agregar los productos nuevos que no existan
-    if (v < CATALOG_VERSION && STATE.productos.length) {
-      var codigos = STATE.productos.map(function(x){ return x.codigo; });
-      PRODUCTOS_DEFAULT.forEach(function(d) {
-        if (codigos.indexOf(d.codigo) === -1) {
-          STATE.productos.push(Object.assign({ id:uid(), activo:true, vendidos:0 }, d));
-        }
-      });
-      localStorage.setItem('bicistore_catalog_v', CATALOG_VERSION);
-      saveData();
-    }
   } catch(e) {
     localStorage.clear();
     STATE.productos = []; STATE.movimientos = []; STATE.nextId = 1;
-  }
-  if (!STATE.productos.length) {
     PRODUCTOS_DEFAULT.forEach(function(d) {
       STATE.productos.push(Object.assign({ id:uid(), activo:true, vendidos:0 }, d));
     });
