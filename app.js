@@ -51,6 +51,25 @@ const PRODUCTOS_DEFAULT = [
   { nombre:'Culote Acolchado',           categoria:'Ropa y Equipamiento',  stock:10, stockMin:4,  precioCompra:55000,   precioVenta:90000,   unidad:'unidad', emoji:'🩳', codigo:'ROP-003', descripcion:'Culote con badana gel 3D' },
   { nombre:'Motor Eléctrico 250W',       categoria:'Electricidad',         stock:3,  stockMin:1,  precioCompra:450000,  precioVenta:720000,  unidad:'unidad', emoji:'⚡', codigo:'ELE-001', descripcion:'Kit conversión bicicleta eléctrica' },
   { nombre:'Batería Litio 36V',          categoria:'Electricidad',         stock:4,  stockMin:2,  precioCompra:380000,  precioVenta:600000,  unidad:'unidad', emoji:'🔋', codigo:'ELE-002', descripcion:'Batería 36V 10Ah para e-bike' },
+
+  // ---- PRODUCTOS AGREGADOS ----
+  { nombre:'Neumático Rin 29',                    categoria:'Llantas y Neumáticos', stock:16, stockMin:4,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'NEU-001', descripcion:'Neumático rin 29' },
+  { nombre:'Pedal Aluminio Media 303333',          categoria:'Transmisión',          stock:11, stockMin:3,  precioCompra:0, precioVenta:0, unidad:'par',    emoji:'⚙️', codigo:'303333',  descripcion:'Pedal en aluminio media, MTB' },
+  { nombre:'Pedo Teflón 9/16 303366',              categoria:'Transmisión',          stock:7,  stockMin:2,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'🔩', codigo:'303366',  descripcion:'Pedo teflón 9/16' },
+  { nombre:'Pedal MTB 1/2 Plástico 303301',        categoria:'Transmisión',          stock:5,  stockMin:2,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'⚙️', codigo:'303301',  descripcion:'Pedal MTB 1/2 en plástico' },
+  { nombre:'Neumático GW 27.5 408246',             categoria:'Llantas y Neumáticos', stock:12, stockMin:3,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'408246',  descripcion:'Neumático GW modelo 27.5' },
+  { nombre:'Neumático KYOWA 700x35/43C',           categoria:'Llantas y Neumáticos', stock:34, stockMin:6,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'NEU-KYO', descripcion:'Neumático KYOWA 700 X 35/43C' },
+  { nombre:'Guardabarros Rin 20',                  categoria:'Accesorios',           stock:0,  stockMin:2,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'🛡️', codigo:'GDB-001', descripcion:'Guardabarros rin 20' },
+  { nombre:'Pedal Aluminio Dorado Cross Media',    categoria:'Transmisión',          stock:2,  stockMin:1,  precioCompra:0, precioVenta:0, unidad:'par',    emoji:'⚙️', codigo:'PED-CRS', descripcion:'Pedales aluminio dorados Cross de media' },
+  { nombre:'Sillín GW',                            categoria:'Sillín',               stock:1,  stockMin:1,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'🪑', codigo:'SIL-GW',  descripcion:'Sillín GW' },
+  { nombre:'Piñón GW-A01 18T Cross/Todo Terreno',  categoria:'Transmisión',          stock:9,  stockMin:3,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'🌀', codigo:'GW-A01-18',descripcion:'Piñón GW-A01 bicicleta todo terreno o Cross medida 18T' },
+  { nombre:'Piñón GW-A01 16T Cross/Todo Terreno',  categoria:'Transmisión',          stock:10, stockMin:3,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'🌀', codigo:'GW-A01-16',descripcion:'Piñón GW-A01 bicicleta todo terreno o Cross medida 16T' },
+  { nombre:'Mango para Cachos',                    categoria:'Manillar y Potencia',  stock:5,  stockMin:2,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'🎮', codigo:'MAN-CAC', descripcion:'Mango para cachos de manillar' },
+  { nombre:'Neumático CHAOYANG 700',               categoria:'Llantas y Neumáticos', stock:18, stockMin:4,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'NEU-CHY7',descripcion:'Neumático CHAOYANG 700' },
+  { nombre:'Neumático CHAOYANG 27',                categoria:'Llantas y Neumáticos', stock:15, stockMin:4,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'NEU-CHY27',descripcion:'Neumático CHAOYANG 27' },
+  { nombre:'Pedal Niña Rin 16',                    categoria:'Transmisión',          stock:16, stockMin:4,  precioCompra:0, precioVenta:0, unidad:'par',    emoji:'⚙️', codigo:'PED-N16', descripcion:'Pedales para niña rin 16' },
+  { nombre:'Solución THUMBS UP',                   categoria:'Lubricantes',          stock:32, stockMin:8,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'🧴', codigo:'SOL-THU', descripcion:'Solución THUMBS UP' },
+  { nombre:'Canastilla Caja de Dirección Cross',   categoria:'Accesorios',           stock:152,stockMin:20, precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'🔧', codigo:'CAN-DIR', descripcion:'Canastilla para caja de dirección 152 unidades Cross' },
 ];
 
 const EMOJIS = ['🚲','🚵','🚴','🏍️','⭕','⚙️','🔧','🔩','🪛','🛠️','🧰','🔗','🌀','💡','🔴','🔵','⛑️','🔒','🧴','📱','🩹','🛢️','🧼','🧤','👕','🩳','⚡','🔋','🎮','✊','🪑','📏','🏁','🥇','🏆','💰','📦','🛒','🚀','❤️'];
@@ -90,13 +109,27 @@ function saveData() {
 }
 
 function loadData() {
+  var CATALOG_VERSION = 2; // incrementar cuando se agregan productos nuevos al default
   try {
     var p = localStorage.getItem('bicistore_productos');
     var m = localStorage.getItem('bicistore_movimientos');
     var n = localStorage.getItem('bicistore_nextId');
+    var v = parseInt(localStorage.getItem('bicistore_catalog_v') || '0');
     if (p) STATE.productos   = JSON.parse(p);
     if (m) STATE.movimientos = JSON.parse(m);
     if (n) STATE.nextId      = JSON.parse(n);
+
+    // Si hay versión anterior, agregar los productos nuevos que no existan
+    if (v < CATALOG_VERSION && STATE.productos.length) {
+      var codigos = STATE.productos.map(function(x){ return x.codigo; });
+      PRODUCTOS_DEFAULT.forEach(function(d) {
+        if (codigos.indexOf(d.codigo) === -1) {
+          STATE.productos.push(Object.assign({ id:uid(), activo:true, vendidos:0 }, d));
+        }
+      });
+      localStorage.setItem('bicistore_catalog_v', CATALOG_VERSION);
+      saveData();
+    }
   } catch(e) {
     localStorage.clear();
     STATE.productos = []; STATE.movimientos = []; STATE.nextId = 1;
@@ -105,6 +138,7 @@ function loadData() {
     PRODUCTOS_DEFAULT.forEach(function(d) {
       STATE.productos.push(Object.assign({ id:uid(), activo:true, vendidos:0 }, d));
     });
+    localStorage.setItem('bicistore_catalog_v', CATALOG_VERSION);
     saveData();
   }
 }
