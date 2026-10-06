@@ -70,6 +70,29 @@ const PRODUCTOS_DEFAULT = [
   { nombre:'Pedal Niña Rin 16',                    categoria:'Transmisión',          stock:16, stockMin:4,  precioCompra:0, precioVenta:0, unidad:'par',    emoji:'⚙️', codigo:'PED-N16', descripcion:'Pedales para niña rin 16' },
   { nombre:'Solución THUMBS UP',                   categoria:'Lubricantes',          stock:32, stockMin:8,  precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'🧴', codigo:'SOL-THU', descripcion:'Solución THUMBS UP' },
   { nombre:'Canastilla Caja de Dirección Cross',   categoria:'Accesorios',           stock:152,stockMin:20, precioCompra:0, precioVenta:0, unidad:'unidad', emoji:'🔧', codigo:'CAN-DIR', descripcion:'Canastilla para caja de dirección 152 unidades Cross' },
+
+  // ---- FACTURA HA BICICLETAS ----
+  { nombre:'Balínera Dirección 1P 5/32x16',             categoria:'Accesorios',          stock:200, stockMin:30, precioCompra:70,    precioVenta:0, unidad:'unidad', emoji:'🔵', codigo:'102106',   descripcion:'Balínera dirección 1P 5/32x16' },
+  { nombre:'Juego Centro Americano 6P 51.5MM 5/16',     categoria:'Transmisión',         stock:15,  stockMin:4,  precioCompra:3990,  precioVenta:0, unidad:'unidad', emoji:'⚙️', codigo:'104301',   descripcion:'Juego de centro americano 6P 51.5MM-5/16' },
+  { nombre:'Juego Dirección 11P Ahead Externo 1-1',     categoria:'Manillar y Potencia', stock:6,   stockMin:2,  precioCompra:5150,  precioVenta:0, unidad:'unidad', emoji:'🔧', codigo:'105417',   descripcion:'Juego dirección 11P Ahead externo 1-1' },
+  { nombre:'Juego Dirección 6P Semi-Integrado 1-1',     categoria:'Manillar y Potencia', stock:6,   stockMin:2,  precioCompra:5390,  precioVenta:0, unidad:'unidad', emoji:'🔧', codigo:'105428',   descripcion:'Juego dirección 6P semi-integrado 1-1' },
+  { nombre:'Cadena 6 Vel Z6 Gris KMC',                  categoria:'Transmisión',         stock:10,  stockMin:3,  precioCompra:1390,  precioVenta:0, unidad:'unidad', emoji:'🔗', codigo:'301206',   descripcion:'Cadena 6 velocidades 1/2x3/32 116L Z6 Gris KMC' },
+  { nombre:'Eje Trasero BMX 3/8x6-1/2 Acero',           categoria:'Transmisión',         stock:30,  stockMin:8,  precioCompra:17900, precioVenta:0, unidad:'unidad', emoji:'🔩', codigo:'402214',   descripcion:'Eje trasero BMX 3/8x6-1/2 acero' },
+  { nombre:'Rin MTB 26P 36H M30 Negro GW',              categoria:'Accesorios',          stock:25,  stockMin:5,  precioCompra:990,   precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'409617',   descripcion:'Rin MTB 26Px1.75 36H M30 negro GW' },
+  { nombre:'Juego Dropout Troquelada Delantera GW',     categoria:'Accesorios',          stock:10,  stockMin:3,  precioCompra:7290,  precioVenta:0, unidad:'unidad', emoji:'🔧', codigo:'502414',   descripcion:'Juego dropout troquelada delantera' },
+  { nombre:'Manubrio BMX Alto 640MM Acero Negro',       categoria:'Manillar y Potencia', stock:5,   stockMin:2,  precioCompra:5290,  precioVenta:0, unidad:'unidad', emoji:'🎮', codigo:'604323',   descripcion:'Manubrio BMX alto 640MM acero negro' },
+  { nombre:'Manubrio BMX Bajo 620MM HB-03',             categoria:'Manillar y Potencia', stock:5,   stockMin:2,  precioCompra:6650,  precioVenta:0, unidad:'unidad', emoji:'🎮', codigo:'604333',   descripcion:'Manubrio BMX bajo 620MM HB-03 DYS-103 AC' },
+  { nombre:'Cintas Manubrio Corcho Colores',            categoria:'Manillar y Potencia', stock:3,   stockMin:1,  precioCompra:8550,  precioVenta:0, unidad:'par',    emoji:'🎨', codigo:'604205',   descripcion:'Cintas de manubrio corcho colores' },
+  { nombre:'Suspensión D/B-V/B 26P CH-3250B GW',       categoria:'Frenos',              stock:3,   stockMin:1,  precioCompra:43500, precioVenta:0, unidad:'unidad', emoji:'🛑', codigo:'606482',   descripcion:'Suspensión D/B-V/B 26P CH-3250B acero GW' },
+  { nombre:'Neumático Molded 700x18/23C F/V 48MM',      categoria:'Llantas y Neumáticos',stock:15,  stockMin:4,  precioCompra:5850,  precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'408585',   descripcion:'Neumático molded 700x18/23C F/V 48MM' },
+  { nombre:'Neumático Molded 15x1.95/2.125 D/V',        categoria:'Llantas y Neumáticos',stock:5,   stockMin:2,  precioCompra:6990,  precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'408574',   descripcion:'Neumático molded 15x1.95/2.125 D/V TRI-P' },
+  { nombre:'Candado Cable Espiral Llave 10x150',         categoria:'Accesorios',          stock:6,   stockMin:2,  precioCompra:6850,  precioVenta:0, unidad:'unidad', emoji:'🔒', codigo:'504132',   descripcion:'Candado de cable espiral de llave 10x150' },
+  { nombre:'Neumático Molded 700x18/23C F/V 80MM',      categoria:'Llantas y Neumáticos',stock:10,  stockMin:3,  precioCompra:14800, precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'408602',   descripcion:'Neumático molded 700x18/23C F/V 80MM' },
+  { nombre:'Sillín MTB Antiprostatico QF-3043 GW',      categoria:'Sillín',              stock:2,   stockMin:1,  precioCompra:107500,precioVenta:0, unidad:'unidad', emoji:'🪑', codigo:'625299',   descripcion:'Sillín MTB antiprostatico QF-3043 GW' },
+  { nombre:'Juego Freno MTB Disco Hidráulico BL',       categoria:'Frenos',              stock:3,   stockMin:1,  precioCompra:21900, precioVenta:0, unidad:'unidad', emoji:'🛑', codigo:'501487',   descripcion:'Juego de freno MTB disco hidráulico' },
+  { nombre:'Cadena 9 Vel S3 GW',                        categoria:'Transmisión',         stock:3,   stockMin:1,  precioCompra:69500, precioVenta:0, unidad:'unidad', emoji:'🔗', codigo:'301138',   descripcion:'Cadena 9 velocidades 1/2x11/128 118L S3 GW' },
+  { nombre:'Cassette MTB 8vel 11-46T HR9-46 GW',        categoria:'Transmisión',         stock:3,   stockMin:1,  precioCompra:47306, precioVenta:0, unidad:'unidad', emoji:'🌀', codigo:'304523',   descripcion:'Cassette MTB 8vel 11-46T HRS-46 GW' },
+  { nombre:'Niples Acero Radio 14G x14MM Negro',        categoria:'Accesorios',          stock:5,   stockMin:2,  precioCompra:5550,  precioVenta:0, unidad:'unidad', emoji:'🔩', codigo:'411107',   descripcion:'Niples acero para radio 14G x14MM negro' },
 ];
 
 const EMOJIS = ['🚲','🚵','🚴','🏍️','⭕','⚙️','🔧','🔩','🪛','🛠️','🧰','🔗','🌀','💡','🔴','🔵','⛑️','🔒','🧴','📱','🩹','🛢️','🧼','🧤','👕','🩳','⚡','🔋','🎮','✊','🪑','📏','🏁','🥇','🏆','💰','📦','🛒','🚀','❤️'];
@@ -109,7 +132,7 @@ function saveData() {
 }
 
 function loadData() {
-  var CATALOG_VERSION = 2; // incrementar cuando se agregan productos nuevos al default
+  var CATALOG_VERSION = 3; // incrementar cuando se agregan productos nuevos al default
   try {
     var p = localStorage.getItem('bicistore_productos');
     var m = localStorage.getItem('bicistore_movimientos');
