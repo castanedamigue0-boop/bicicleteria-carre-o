@@ -16,7 +16,50 @@ const STATE = {
 // ================================================================
 // CATÁLOGO INICIAL
 // ================================================================
-const PRODUCTOS_DEFAULT = [];
+const PRODUCTOS_DEFAULT = [
+
+  // ---- DEL CHAT DE MIGUEL ----
+  { nombre:'Neumático Rin 29',                    categoria:'Llantas y Neumáticos', stock:16,  stockMin:4,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'NEU-001',    descripcion:'Neumático rin 29' },
+  { nombre:'Pedal Aluminio Media MTB',            categoria:'Transmisión',          stock:11,  stockMin:3,  precioCompra:0,      precioVenta:0, unidad:'par',    emoji:'⚙️', codigo:'303333',     descripcion:'Pedal en aluminio media MTB' },
+  { nombre:'Pedo Teflón 9/16',                    categoria:'Transmisión',          stock:7,   stockMin:2,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'🔩', codigo:'303366',     descripcion:'Pedo teflón 9/16' },
+  { nombre:'Pedal MTB 1/2 Plástico',              categoria:'Transmisión',          stock:5,   stockMin:2,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'⚙️', codigo:'303301',     descripcion:'Pedal MTB 1/2 en plástico' },
+  { nombre:'Neumático GW 27.5',                   categoria:'Llantas y Neumáticos', stock:12,  stockMin:3,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'408246',     descripcion:'Neumático GW modelo 27.5' },
+  { nombre:'Neumático KYOWA 700x35/43C',          categoria:'Llantas y Neumáticos', stock:34,  stockMin:6,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'NEU-KYO',    descripcion:'Neumático KYOWA 700 X 35/43C' },
+  { nombre:'Guardabarros Rin 20',                 categoria:'Accesorios',           stock:0,   stockMin:2,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'🛡️', codigo:'GDB-001',    descripcion:'Guardabarros rin 20' },
+  { nombre:'Pedal Aluminio Dorado Cross Media',   categoria:'Transmisión',          stock:2,   stockMin:1,  precioCompra:0,      precioVenta:0, unidad:'par',    emoji:'⚙️', codigo:'PED-CRS',    descripcion:'Pedales aluminio dorados Cross de media' },
+  { nombre:'Sillín GW',                           categoria:'Sillín',               stock:1,   stockMin:1,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'🪑', codigo:'SIL-GW',     descripcion:'Sillín GW' },
+  { nombre:'Piñón GW-A01 18T Cross/Todo Terreno', categoria:'Transmisión',          stock:9,   stockMin:3,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'🌀', codigo:'GW-A01-18',  descripcion:'Piñón GW-A01 todo terreno o Cross 18T' },
+  { nombre:'Piñón GW-A01 16T Cross/Todo Terreno', categoria:'Transmisión',          stock:10,  stockMin:3,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'🌀', codigo:'GW-A01-16',  descripcion:'Piñón GW-A01 todo terreno o Cross 16T' },
+  { nombre:'Mango para Cachos',                   categoria:'Manillar y Potencia',  stock:5,   stockMin:2,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'🎮', codigo:'MAN-CAC',    descripcion:'Mango para cachos de manillar' },
+  { nombre:'Neumático CHAOYANG 700',              categoria:'Llantas y Neumáticos', stock:18,  stockMin:4,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'NEU-CHY7',   descripcion:'Neumático CHAOYANG 700' },
+  { nombre:'Neumático CHAOYANG 27',               categoria:'Llantas y Neumáticos', stock:15,  stockMin:4,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'NEU-CHY27',  descripcion:'Neumático CHAOYANG 27' },
+  { nombre:'Pedal Niña Rin 16',                   categoria:'Transmisión',          stock:16,  stockMin:4,  precioCompra:0,      precioVenta:0, unidad:'par',    emoji:'⚙️', codigo:'PED-N16',    descripcion:'Pedales para niña rin 16' },
+  { nombre:'Solución THUMBS UP',                  categoria:'Lubricantes',          stock:32,  stockMin:8,  precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'🧴', codigo:'SOL-THU',    descripcion:'Solución THUMBS UP' },
+  { nombre:'Canastilla Caja Dirección Cross',     categoria:'Accesorios',           stock:152, stockMin:20, precioCompra:0,      precioVenta:0, unidad:'unidad', emoji:'🔧', codigo:'CAN-DIR',    descripcion:'Canastilla para caja de dirección Cross' },
+
+  // ---- FACTURA HA BICICLETAS ----
+  { nombre:'Balínera Dirección 1P 5/32x16',           categoria:'Accesorios',          stock:200, stockMin:30, precioCompra:70,     precioVenta:0, unidad:'unidad', emoji:'🔵', codigo:'102106',  descripcion:'Balínera dirección 1P 5/32x16' },
+  { nombre:'Juego Centro Americano 6P 51.5MM 5/16',   categoria:'Transmisión',         stock:15,  stockMin:4,  precioCompra:3990,   precioVenta:0, unidad:'unidad', emoji:'⚙️', codigo:'104301',  descripcion:'Juego centro americano 6P 51.5MM-5/16' },
+  { nombre:'Juego Dirección 11P Ahead Externo 1-1',   categoria:'Manillar y Potencia', stock:6,   stockMin:2,  precioCompra:5150,   precioVenta:0, unidad:'unidad', emoji:'🔧', codigo:'105417',  descripcion:'Juego dirección 11P Ahead externo 1-1' },
+  { nombre:'Juego Dirección 6P Semi-Integrado 1-1',   categoria:'Manillar y Potencia', stock:6,   stockMin:2,  precioCompra:5390,   precioVenta:0, unidad:'unidad', emoji:'🔧', codigo:'105428',  descripcion:'Juego dirección 6P semi-integrado 1-1' },
+  { nombre:'Cadena 6 Vel Z6 Gris KMC',                categoria:'Transmisión',         stock:10,  stockMin:3,  precioCompra:1390,   precioVenta:0, unidad:'unidad', emoji:'🔗', codigo:'301206',  descripcion:'Cadena 6 vel 1/2x3/32 116L Z6 Gris KMC' },
+  { nombre:'Eje Trasero BMX 3/8x6-1/2 Acero',         categoria:'Transmisión',         stock:30,  stockMin:8,  precioCompra:17900,  precioVenta:0, unidad:'unidad', emoji:'🔩', codigo:'402214',  descripcion:'Eje trasero BMX 3/8x6-1/2 acero' },
+  { nombre:'Rin MTB 26P 36H M30 Negro GW',            categoria:'Accesorios',          stock:25,  stockMin:5,  precioCompra:990,    precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'409617',  descripcion:'Rin MTB 26Px1.75 36H M30 negro GW' },
+  { nombre:'Juego Dropout Troquelada Delantera GW',   categoria:'Accesorios',          stock:10,  stockMin:3,  precioCompra:7290,   precioVenta:0, unidad:'unidad', emoji:'🔧', codigo:'502414',  descripcion:'Juego dropout troquelada delantera GW' },
+  { nombre:'Manubrio BMX Alto 640MM Acero Negro',     categoria:'Manillar y Potencia', stock:5,   stockMin:2,  precioCompra:5290,   precioVenta:0, unidad:'unidad', emoji:'🎮', codigo:'604323',  descripcion:'Manubrio BMX alto 640MM acero negro' },
+  { nombre:'Manubrio BMX Bajo 620MM HB-03',           categoria:'Manillar y Potencia', stock:5,   stockMin:2,  precioCompra:6650,   precioVenta:0, unidad:'unidad', emoji:'🎮', codigo:'604333',  descripcion:'Manubrio BMX bajo 620MM HB-03 DYS-103' },
+  { nombre:'Cintas Manubrio Corcho Colores',          categoria:'Manillar y Potencia', stock:3,   stockMin:1,  precioCompra:8550,   precioVenta:0, unidad:'par',    emoji:'🎨', codigo:'604205',  descripcion:'Cintas de manubrio corcho colores' },
+  { nombre:'Suspensión D/B-V/B 26P CH-3250B GW',     categoria:'Frenos',              stock:3,   stockMin:1,  precioCompra:43500,  precioVenta:0, unidad:'unidad', emoji:'🛑', codigo:'606482',  descripcion:'Suspensión D/B-V/B 26P CH-3250B acero GW' },
+  { nombre:'Neumático Molded 700x18/23C F/V 48MM',    categoria:'Llantas y Neumáticos',stock:15,  stockMin:4,  precioCompra:5850,   precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'408585',  descripcion:'Neumático molded 700x18/23C F/V 48MM' },
+  { nombre:'Neumático Molded 15x1.95/2.125 D/V',      categoria:'Llantas y Neumáticos',stock:5,   stockMin:2,  precioCompra:6990,   precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'408574',  descripcion:'Neumático molded 15x1.95/2.125 D/V TRI-P' },
+  { nombre:'Candado Cable Espiral Llave 10x150',       categoria:'Accesorios',          stock:6,   stockMin:2,  precioCompra:6850,   precioVenta:0, unidad:'unidad', emoji:'🔒', codigo:'504132',  descripcion:'Candado cable espiral llave 10x150' },
+  { nombre:'Neumático Molded 700x18/23C F/V 80MM',    categoria:'Llantas y Neumáticos',stock:10,  stockMin:3,  precioCompra:14800,  precioVenta:0, unidad:'unidad', emoji:'⭕', codigo:'408602',  descripcion:'Neumático molded 700x18/23C F/V 80MM' },
+  { nombre:'Sillín MTB Antiprostatico QF-3043 GW',    categoria:'Sillín',              stock:2,   stockMin:1,  precioCompra:107500, precioVenta:0, unidad:'unidad', emoji:'🪑', codigo:'625299',  descripcion:'Sillín MTB antiprostatico QF-3043 GW' },
+  { nombre:'Juego Freno MTB Disco Hidráulico BL',     categoria:'Frenos',              stock:3,   stockMin:1,  precioCompra:21900,  precioVenta:0, unidad:'unidad', emoji:'🛑', codigo:'501487',  descripcion:'Juego freno MTB disco hidráulico' },
+  { nombre:'Cadena 9 Vel S3 GW',                      categoria:'Transmisión',         stock:3,   stockMin:1,  precioCompra:69500,  precioVenta:0, unidad:'unidad', emoji:'🔗', codigo:'301138',  descripcion:'Cadena 9 vel 1/2x11/128 118L S3 GW' },
+  { nombre:'Cassette MTB 8vel 11-46T HR9-46 GW',      categoria:'Transmisión',         stock:3,   stockMin:1,  precioCompra:47306,  precioVenta:0, unidad:'unidad', emoji:'🌀', codigo:'304523',  descripcion:'Cassette MTB 8vel 11-46T HRS-46 GW' },
+  { nombre:'Niples Acero Radio 14G x14MM Negro',      categoria:'Accesorios',          stock:5,   stockMin:2,  precioCompra:5550,   precioVenta:0, unidad:'unidad', emoji:'🔩', codigo:'411107',  descripcion:'Niples acero radio 14G x14MM negro' },
+];
 
 const EMOJIS = ['🚲','🚵','🚴','🏍️','⭕','⚙️','🔧','🔩','🪛','🛠️','🧰','🔗','🌀','💡','🔴','🔵','⛑️','🔒','🧴','📱','🩹','🛢️','🧼','🧤','👕','🩳','⚡','🔋','🎮','✊','🪑','📏','🏁','🥇','🏆','💰','📦','🛒','🚀','❤️'];
 
@@ -55,7 +98,7 @@ function saveData() {
 }
 
 function loadData() {
-  var CATALOG_VERSION = 5;
+  var CATALOG_VERSION = 6;
   var savedVersion = parseInt(localStorage.getItem('bicistore_catalog_v') || '0');
 
   // Si la versión guardada es menor, limpiar TODO y cargar fresco
